@@ -53,6 +53,18 @@ FNV-1a is NOT cryptographic — acceptable because the log is simulated; a real 
 would use SHA-256 + signed anchors (noted in UI copy). **Rejected:** WebCrypto SHA-256
 (async-only API complicates the synchronous store for no demo gain).
 
+## ADR-0008 — Rounds 7–8: git baseline, CI gate, Playwright e2e restored
+**Date:** 2026-07-05 · **Status:** Accepted (closes the ADR-0007 deferral)
+Repo initialized on `main` with the Milestone-1 app as the baseline commit. CI
+(`.github/workflows/ci.yml`) runs typecheck + lint + unit tests + build, plus a
+Playwright job covering the six hero-flow e2e tests against a production build on
+port 3100. E2e tests use in-app navigation where state must persist, because a full
+reload intentionally resets the seeded world (ADR-0004).
+**Remaining (requires the human's GitHub/Vercel accounts, not doable from this
+machine):** push to GitHub, enable branch protection on `main`, connect the repo to
+the Vercel project for PR previews. Recorded as explicit operator steps in README.
+**Rejected:** faking a remote or claiming branch protection exists (Contract §C4).
+
 ## ADR-0007 — Playwright e2e and CI pipeline deferred to next milestone
 **Date:** 2026-07-05 · **Status:** Accepted (deviation from playbook, logged per §E3)
 Round 1 ships with Vitest unit + component smoke tests, local verify commands, and a
