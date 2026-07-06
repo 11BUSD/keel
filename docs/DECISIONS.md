@@ -113,6 +113,16 @@ deploy/withdraw via `TreasuryEngine` (withdrawals bounded by liquid capital).
 noise, not narrative, at demo stage); provider yield on idle capital (Round 9's
 T-bill sweep already tells that story on the agent side).
 
+## ADR-0013 — Round 13: CI verified green on a real GitHub runner
+**Date:** 2026-07-06 · **Status:** Accepted
+Repo pushed to github.com/AlchemyAdvisor/keel by the operator. First real run of
+`.github/workflows/ci.yml` passed with zero changes: both jobs green ("Typecheck ·
+Lint · Test · Build" and "Playwright e2e" with browsers installed on the runner) —
+run 28790483341 on commit e3bd936. **Outstanding operator steps:** branch
+protection on `main` (API reports protected:false, so red checks cannot yet BLOCK a
+merge — the deliberate-broken-PR demonstration is deferred until protection is on)
+and the Vercel↔GitHub connection for per-PR previews.
+
 ## ADR-0007 — Playwright e2e and CI pipeline deferred to next milestone
 **Date:** 2026-07-05 · **Status:** Accepted (deviation from playbook, logged per §E3)
 Round 1 ships with Vitest unit + component smoke tests, local verify commands, and a

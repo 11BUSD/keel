@@ -25,12 +25,14 @@ One vertical slice per round. A task is DONE only per Contract §G.
 | R-11 | Stress scenarios + CCP default waterfall + fail-safe halt + /scenarios | ✅ done |
 | R-12 | Capital-provider console: fund, earn spread, waterfall-protected | ✅ done |
 
-## Milestone 3 — candidates (not committed)
+## Milestone 3 — legibility & shareability (per the Milestone-3 prompt pack)
 
-| # | Task |
-|---|------|
-| R-13 | Switchable calm/stressed world seeds for demo variety |
-| R-14 | Auth + multi-tenant fleets (moves the demo toward pilot) |
-| R-15 | Real-time revenue attestation mock (webhook-style event stream) |
+| # | Task | Status |
+|---|------|--------|
+| R-13 | CI green on a real runner | ✅ verified (run 28790483341); branch protection + Vercel-git connect remain operator steps |
+| R-14 | Plain-language copy system: copy.ts + Term/ShowDetails/ScreenIntro | ⬜ in progress |
+| R-15 | Guided 9-beat tour | ⬜ todo |
+| R-16 | Cold-visitor explainer | ⬜ todo |
+| R-17 | Shareability: OG card, responsive, a11y pass | ⬜ todo |
 
 ## Acceptance criteria live with each task prompt; statuses updated per round.
