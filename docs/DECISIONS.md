@@ -65,6 +65,17 @@ machine):** push to GitHub, enable branch protection on `main`, connect the repo
 the Vercel project for PR previews. Recorded as explicit operator steps in README.
 **Rejected:** faking a remote or claiming branch protection exists (Contract §C4).
 
+## ADR-0009 — Round 9: financing lifecycle via a daily-step simulation clock
+**Date:** 2026-07-06 · **Status:** Accepted
+`TreasuryEngine.advanceTime(days)` steps a per-day simulation: revenue accrual (a
+flat trailing-30d/30 per day), burn, revenue-share repayment of advances, then a
+laddered reserve — surplus above `dailyBurn × minRunwayDays` sweeps into a simulated
+tokenized T-bill position (4.5% APY, daily compounding); when burn pulls cash below
+the floor, T-bills are **redeemed** to defend it (runway before yield — a failing
+test forced this redemption rule, see treasurySim.test.ts). Killed/paused agents
+neither earn nor spend. **Rejected:** stochastic daily revenue (breaks demo
+determinism); real yield instruments (Contract PRIME DIRECTIVE).
+
 ## ADR-0007 — Playwright e2e and CI pipeline deferred to next milestone
 **Date:** 2026-07-05 · **Status:** Accepted (deviation from playbook, logged per §E3)
 Round 1 ships with Vitest unit + component smoke tests, local verify commands, and a

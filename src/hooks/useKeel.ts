@@ -37,6 +37,13 @@ export function useDecisions(agentId?: string) {
   });
 }
 
+export function useAdvances(agentId?: string) {
+  return useQuery({
+    queryKey: ["advances", agentId ?? "all"],
+    queryFn: () => getServices().ledger.listAdvances(agentId),
+  });
+}
+
 export function useAuditLog() {
   return useQuery({
     queryKey: ["audit"],
@@ -62,6 +69,14 @@ export function useEvaluateFinancing() {
   return useMutation({
     mutationFn: (input: FinancingRequestInput) =>
       getServices().riskEngine.evaluate(input),
+    onSuccess: invalidate,
+  });
+}
+
+export function useAdvanceTime() {
+  const invalidate = useInvalidateWorld();
+  return useMutation({
+    mutationFn: (days: number) => getServices().treasuryEngine.advanceTime(days),
     onSuccess: invalidate,
   });
 }
