@@ -7,6 +7,7 @@ import { Panel } from "@/components/ui/Panel";
 import { Sparkline } from "@/components/ui/Sparkline";
 import { StatBlock } from "@/components/ui/StatBlock";
 import { ErrorState, Skeleton } from "@/components/ui/States";
+import { COPY } from "@/content/copy";
 import { formatDays, formatUsd, formatUsdCompact } from "@/lib/format";
 import { useAgent } from "@/hooks/useKeel";
 import { runwayTone, statusTone } from "@/components/statusTone";
@@ -43,6 +44,14 @@ export function AgentDetail({ agentId }: { agentId: string }) {
   return (
     <div className="space-y-4">
       <Header agent={agent} />
+      {agent.status === "active" && days < agent.mandate.minRunwayDays && (
+        <p
+          role="status"
+          className="rounded-md border border-danger/40 bg-danger/10 px-4 py-3 text-[13px] leading-relaxed text-ink"
+        >
+          {COPY.heroMoments.runwayAlert(agent.name, Math.round(days))}
+        </p>
+      )}
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <StatBlock
           label="Revenue (30d, verified)"

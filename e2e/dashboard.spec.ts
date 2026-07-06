@@ -5,7 +5,7 @@ test("landing → fleet console shows the seeded fleet with SwarmLabel's red run
 }) => {
   await page.goto("/");
   await expect(
-    page.getByRole("heading", { name: /financial control plane/i }),
+    page.getByRole("heading", { name: /bank, risk desk, and safety net/i }),
   ).toBeVisible();
 
   await page.getByRole("link", { name: "Open the fleet console" }).click();

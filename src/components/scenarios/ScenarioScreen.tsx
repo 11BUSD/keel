@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Panel } from "@/components/ui/Panel";
 import { EmptyState, ErrorState, SkeletonRows } from "@/components/ui/States";
+import { COPY } from "@/content/copy";
 import { formatUsd } from "@/lib/format";
 import {
   useResetScenario,
@@ -31,13 +32,16 @@ export function ScenarioScreen() {
   return (
     <div className="space-y-4">
       <Panel
-        title="Inject a catastrophe"
+        title={COPY.scenarios.injectTitle}
         action={
           <Button variant="ghost" busy={reset.isPending} onClick={() => reset.mutate()}>
-            Reset scenario state
+            {COPY.scenarios.reset}
           </Button>
         }
       >
+        <p className="mb-3 max-w-3xl text-[13px] leading-relaxed text-ink">
+          {COPY.heroMoments.waterfall}
+        </p>
         <div className="grid gap-3 sm:grid-cols-2">
           {specs.data.map((spec) => (
             <div key={spec.id} className="flex flex-col rounded-md border border-line bg-surface-2 p-3">
@@ -50,7 +54,7 @@ export function ScenarioScreen() {
                 disabled={run.isPending}
                 onClick={() => run.mutate(spec.id)}
               >
-                Run {spec.name.toLowerCase()}
+                {COPY.scenarios.run(spec.name)}
               </Button>
             </div>
           ))}
@@ -58,21 +62,19 @@ export function ScenarioScreen() {
       </Panel>
 
       <div className="grid gap-4 lg:grid-cols-2">
-        <Panel title="Default waterfall — who absorbs the loss">
+        <Panel title={COPY.scenarios.waterfallTitle}>
           <WaterfallViz layers={state.data.layers} />
           <p className="mt-3 text-[11px] leading-relaxed text-ink-faint">
-            Losses fill each layer completely before touching the next. Capital
-            providers sit behind all six layers — they lose only if the entire
-            waterfall is exhausted.
+            {COPY.scenarios.waterfallFootnote}
           </p>
         </Panel>
-        <Panel title="Automated response timeline">
+        <Panel title={COPY.scenarios.timelineTitle}>
           {last ? (
             <ResultTimeline result={last} />
           ) : (
             <EmptyState
-              title="No scenario run yet"
-              detail="Inject a catastrophe to watch the safety machinery respond step by step."
+              title={COPY.scenarios.emptyTitle}
+              detail={COPY.scenarios.emptyDetail}
             />
           )}
         </Panel>
@@ -86,13 +88,13 @@ function ResultTimeline({ result }: { result: ScenarioResult }) {
     <div className="space-y-3">
       <div className="flex flex-wrap items-center gap-2">
         <Badge tone={result.halted ? "danger" : "caution"}>
-          {result.halted ? "HALTED — fail-safe default" : result.name}
+          {result.halted ? COPY.scenarios.haltedBadge : result.name}
         </Badge>
-        {result.throttled && <Badge tone="accent">throttled unwind</Badge>}
+        {result.throttled && <Badge tone="accent">{COPY.scenarios.throttledBadge}</Badge>}
         {!result.halted && (
           <span className="text-xs text-ink-muted">
-            Loss {formatUsd(result.lossUsd)} · absorbed {formatUsd(result.absorbedUsd)}
-            {result.uncoveredUsd > 0 && ` · UNCOVERED ${formatUsd(result.uncoveredUsd)}`}
+            {COPY.scenarios.lossLine(formatUsd(result.lossUsd), formatUsd(result.absorbedUsd))}
+            {result.uncoveredUsd > 0 && COPY.scenarios.uncovered(formatUsd(result.uncoveredUsd))}
           </span>
         )}
       </div>

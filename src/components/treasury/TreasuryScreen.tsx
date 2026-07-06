@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/Button";
 import { Panel } from "@/components/ui/Panel";
 import { StatBlock } from "@/components/ui/StatBlock";
 import { ErrorState, SkeletonRows } from "@/components/ui/States";
+import { COPY } from "@/content/copy";
 import { formatUsd, formatUsdCompact } from "@/lib/format";
 import { useAdvanceTime, useFleetSummary } from "@/hooks/useKeel";
 import { AdvanceBook } from "./AdvanceBook";
@@ -44,22 +45,20 @@ export function TreasuryScreen() {
         />
       </div>
 
-      <Panel title="Advance the simulation">
+      <Panel title={COPY.treasury.advanceTitle}>
         <div className="flex flex-wrap items-center gap-3">
           <p className="mr-auto max-w-lg text-[13px] text-ink-muted">
-            Each simulated day: revenue accrues, burn is paid, revenue-share sweeps
-            repay advances, and surplus above each agent&apos;s reserve floor sweeps
-            into simulated T-bills — redeemed automatically to defend runway.
+            {COPY.treasury.advanceBody}
           </p>
           <Button
             variant="ghost"
             busy={advanceTime.isPending}
             onClick={() => advanceTime.mutate(7)}
           >
-            Advance 7 days
+            {COPY.treasury.advance7}
           </Button>
           <Button busy={advanceTime.isPending} onClick={() => advanceTime.mutate(30)}>
-            Advance 30 days
+            {COPY.treasury.advance30}
           </Button>
         </div>
         {advanceTime.data && (

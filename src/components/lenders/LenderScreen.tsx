@@ -6,6 +6,7 @@ import { Field, TextInput } from "@/components/ui/Field";
 import { Panel } from "@/components/ui/Panel";
 import { StatBlock } from "@/components/ui/StatBlock";
 import { ErrorState, SkeletonRows } from "@/components/ui/States";
+import { COPY } from "@/content/copy";
 import { formatPct, formatUsdCompact } from "@/lib/format";
 import {
   useCapitalProvider,
@@ -32,24 +33,24 @@ export function LenderScreen() {
   return (
     <div className="space-y-4">
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <StatBlock label="Committed capital" value={formatUsdCompact(p.committedUsd)} sub={p.name} />
+        <StatBlock label={COPY.lenders.committed} value={formatUsdCompact(p.committedUsd)} sub={p.name} />
         <StatBlock
-          label="Deployed / liquid"
+          label={COPY.lenders.deployed}
           value={`${formatUsdCompact(p.deployedUsd)} / ${formatUsdCompact(p.availableUsd)}`}
           tone={p.deployedUsd > 0 ? "accent" : "neutral"}
-          sub="At work in advances vs withdrawable"
+          sub="Funding advances vs withdrawable"
         />
         <StatBlock
-          label="Earned spread"
+          label={COPY.lenders.spread}
           value={formatUsdCompact(p.earnedSpreadUsd)}
           tone={p.earnedSpreadUsd > 0 ? "positive" : "neutral"}
-          sub={`${formatPct(spreadRate, 2)} on committed capital`}
+          sub={`${formatPct(spreadRate, 2)} on money put in`}
         />
         <StatBlock
-          label="Waterfall-pierced losses"
+          label={COPY.lenders.losses}
           value={formatUsdCompact(p.lossUsd)}
           tone={p.lossUsd > 0 ? "danger" : "positive"}
-          sub={p.lossUsd > 0 ? "The waterfall was exhausted" : "Fully protected to date"}
+          sub={p.lossUsd > 0 ? COPY.lenders.piercedNote : COPY.lenders.protectedNote}
         />
       </div>
 
@@ -81,13 +82,13 @@ function CapitalControls({ liquidUsd }: { liquidUsd: number }) {
   };
 
   return (
-    <Panel title="Move simulated capital">
+    <Panel title={COPY.lenders.moveTitle}>
       <div className="flex flex-wrap items-end gap-3">
         <div className="max-w-52 flex-1">
           <Field
-            label="Amount (USD)"
+            label={COPY.lenders.amountLabel}
             htmlFor="capital-amount"
-            hint={`Liquid now: ${formatUsdCompact(liquidUsd)}`}
+            hint={COPY.lenders.liquidHint(formatUsdCompact(liquidUsd))}
           >
             <TextInput
               id="capital-amount"
@@ -98,10 +99,10 @@ function CapitalControls({ liquidUsd }: { liquidUsd: number }) {
           </Field>
         </div>
         <Button busy={deploy.isPending} onClick={() => move("deploy")}>
-          Deploy capital
+          {COPY.lenders.deployButton}
         </Button>
         <Button variant="ghost" busy={withdraw.isPending} onClick={() => move("withdraw")}>
-          Withdraw
+          {COPY.lenders.withdrawButton}
         </Button>
       </div>
       {error && (

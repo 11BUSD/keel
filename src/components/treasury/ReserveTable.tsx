@@ -4,6 +4,7 @@ import { runwayDays, type AgentRecord } from "@/domain";
 import { Meter } from "@/components/ui/Meter";
 import { Panel } from "@/components/ui/Panel";
 import { ErrorState, SkeletonRows } from "@/components/ui/States";
+import { COPY } from "@/content/copy";
 import { formatDays, formatUsd } from "@/lib/format";
 import { useAgents } from "@/hooks/useKeel";
 
@@ -21,7 +22,7 @@ export function ReserveTable() {
   }
 
   return (
-    <Panel title="Reserves & sweeps (runway before yield)">
+    <Panel title={COPY.treasury.reservesTitle}>
       <ul className="divide-y divide-line/60">
         {data
           .filter((a) => a.status !== "killed")

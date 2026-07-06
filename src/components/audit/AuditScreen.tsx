@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Select } from "@/components/ui/Field";
 import { Panel } from "@/components/ui/Panel";
 import { EmptyState, ErrorState, SkeletonRows } from "@/components/ui/States";
+import { COPY } from "@/content/copy";
 import { formatTime } from "@/lib/format";
 import { useAuditLog, useAuditVerify } from "@/hooks/useKeel";
 
@@ -31,18 +32,14 @@ export function AuditScreen() {
 
   return (
     <div className="space-y-4">
-      <Panel title="Chain integrity">
+      <Panel title={COPY.audit.chainTitle}>
         <div className="flex flex-wrap items-center gap-3">
           {chain.data && (
             <Badge tone={chain.data.valid ? "positive" : "danger"}>
-              {chain.data.valid ? "Chain verified" : "CHAIN BROKEN"}
+              {chain.data.valid ? COPY.audit.chainVerified : COPY.audit.chainBroken}
             </Badge>
           )}
-          <p className="text-[13px] text-ink-muted">
-            Every event embeds the previous event&apos;s hash; the chain is recomputed
-            end-to-end on read. Simulated with a non-cryptographic hash — a production
-            ledger would use SHA-256 with signed anchors.
-          </p>
+          <p className="text-[13px] text-ink-muted">{COPY.audit.chainBody}</p>
         </div>
       </Panel>
 
@@ -63,10 +60,7 @@ export function AuditScreen() {
         }
       >
         {filtered.length === 0 ? (
-          <EmptyState
-            title="No events in this category"
-            detail="Run a financing request or flip a control to generate events."
-          />
+          <EmptyState title={COPY.audit.emptyTitle} detail={COPY.audit.emptyDetail} />
         ) : (
           <ol className="divide-y divide-line/60">
             {filtered.map((e) => (

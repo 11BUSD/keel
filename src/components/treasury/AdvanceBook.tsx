@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Meter } from "@/components/ui/Meter";
 import { Panel } from "@/components/ui/Panel";
 import { EmptyState, SkeletonRows } from "@/components/ui/States";
+import { COPY } from "@/content/copy";
 import { formatPct, formatUsd } from "@/lib/format";
 import { useAdvances, useAgents } from "@/hooks/useKeel";
 
@@ -16,7 +17,7 @@ export function AdvanceBook() {
 
   return (
     <Panel
-      title="Advance book"
+      title={COPY.treasury.bookTitle}
       action={
         <Link href="/financing" className="text-xs text-accent hover:underline">
           New request →
@@ -26,10 +27,7 @@ export function AdvanceBook() {
       {advances.isPending || agents.isPending ? (
         <SkeletonRows rows={3} />
       ) : advances.isError || !advances.data || advances.data.length === 0 ? (
-        <EmptyState
-          title="No advances yet"
-          detail="Approve a financing request, then advance the clock to watch it repay."
-        />
+        <EmptyState title="No advances yet" detail={COPY.treasury.bookEmpty} />
       ) : (
         <ul className="space-y-2.5">
           {advances.data.map((adv) => {

@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Meter } from "@/components/ui/Meter";
 import { Panel } from "@/components/ui/Panel";
 import { ErrorState, SkeletonRows } from "@/components/ui/States";
+import { COPY } from "@/content/copy";
 import { formatPct } from "@/lib/format";
 import { useAgents, useCorrelationReport } from "@/hooks/useKeel";
 
@@ -25,14 +26,8 @@ export function CorrelationScreen() {
   return (
     <div className="space-y-4">
       <Panel title="Why this matters">
-        <p className="max-w-3xl text-[13px] leading-relaxed text-ink-muted">
-          Agents built on the same base model with the same strategy are economically
-          <span className="text-ink"> one bet</span>: they succeed and fail together, a
-          correlated exposure heterogeneous human markets don&apos;t have. Keel treats
-          each cluster as a single exposure and charges a crowding add-on that rises
-          with cluster size — visible below and as rule{" "}
-          <span className="font-mono text-xs">R9_CORRELATION_CROWDING</span> in every
-          financing decision.
+        <p className="max-w-3xl text-[13px] leading-relaxed text-ink">
+          {COPY.heroMoments.moat}
         </p>
       </Panel>
 

@@ -2,17 +2,18 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { COPY } from "@/content/copy";
 
 const items = [
-  { href: "/dashboard", label: "Fleet Dashboard" },
-  { href: "/financing", label: "Financing" },
-  { href: "/treasury", label: "Treasury" },
-  { href: "/risk", label: "Correlation Risk" },
-  { href: "/scenarios", label: "Stress Scenarios" },
-  { href: "/lenders", label: "Capital Provider" },
-  { href: "/controls", label: "Fail-safe Controls" },
-  { href: "/audit", label: "Audit Log" },
-  { href: "/style", label: "Design System" },
+  { href: "/dashboard", label: COPY.shell.nav.dashboard },
+  { href: "/financing", label: COPY.shell.nav.financing },
+  { href: "/treasury", label: COPY.shell.nav.treasury },
+  { href: "/risk", label: COPY.shell.nav.risk },
+  { href: "/scenarios", label: COPY.shell.nav.scenarios },
+  { href: "/lenders", label: COPY.shell.nav.lenders },
+  { href: "/controls", label: COPY.shell.nav.controls },
+  { href: "/audit", label: COPY.shell.nav.audit },
+  { href: "/style", label: COPY.shell.nav.style },
 ];
 
 export function Sidebar() {
@@ -23,9 +24,11 @@ export function Sidebar() {
         href="/"
         className="flex items-baseline gap-2 border-b border-line px-4 py-4"
       >
-        <span className="text-lg font-semibold tracking-tight text-ink">Keel</span>
+        <span className="text-lg font-semibold tracking-tight text-ink">
+          {COPY.shell.brand}
+        </span>
         <span className="text-[10px] font-medium uppercase tracking-widest text-ink-faint">
-          Prime
+          {COPY.shell.brandSuffix}
         </span>
       </Link>
       <nav aria-label="Main" className="flex-1 space-y-0.5 p-2">
@@ -50,7 +53,7 @@ export function Sidebar() {
         })}
       </nav>
       <p className="border-t border-line px-4 py-3 text-[10px] leading-relaxed text-ink-faint">
-        Demo prototype. All data simulated — no real funds, custody, or trading.
+        {COPY.shell.sidebarFooter}
       </p>
     </aside>
   );

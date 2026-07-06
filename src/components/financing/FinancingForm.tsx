@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/Button";
 import { Field, Select, TextInput } from "@/components/ui/Field";
 import { Panel } from "@/components/ui/Panel";
 import { ErrorState, SkeletonRows } from "@/components/ui/States";
+import { COPY } from "@/content/copy";
 import { useAgents, useEvaluateFinancing } from "@/hooks/useKeel";
 
 const evaluationSteps = [
@@ -40,7 +41,7 @@ export function FinancingForm({
 
   if (agents.isPending) {
     return (
-      <Panel title="Request compute financing">
+      <Panel title={COPY.financing.formTitle}>
         <SkeletonRows rows={4} />
       </Panel>
     );
@@ -69,7 +70,7 @@ export function FinancingForm({
   };
 
   return (
-    <Panel title="Request compute financing">
+    <Panel title={COPY.financing.formTitle}>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Field label="Agent" htmlFor="fin-agent">
           <Select
@@ -111,7 +112,7 @@ export function FinancingForm({
       </div>
       <div className="mt-4 flex items-center gap-4">
         <Button busy={evaluate.isPending} onClick={submit}>
-          {evaluate.isPending ? "Evaluating…" : "Submit to risk engine"}
+          {evaluate.isPending ? COPY.financing.evaluating : COPY.financing.submit}
         </Button>
         {evaluate.isPending && <EvaluationTicker />}
       </div>

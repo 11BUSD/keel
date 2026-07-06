@@ -3,6 +3,7 @@
 import type { CapitalProvider } from "@/domain";
 import { Panel } from "@/components/ui/Panel";
 import { EmptyState } from "@/components/ui/States";
+import { COPY } from "@/content/copy";
 import { formatUsd } from "@/lib/format";
 import { useAgents } from "@/hooks/useKeel";
 
@@ -11,12 +12,9 @@ export function AllocationList({ provider }: { provider: CapitalProvider }) {
   const agents = useAgents();
 
   return (
-    <Panel title="Capital at work">
+    <Panel title={COPY.lenders.capitalAtWork}>
       {provider.allocations.length === 0 ? (
-        <EmptyState
-          title="No capital deployed"
-          detail="Approve a financing request — the provider funds it and starts earning spread."
-        />
+        <EmptyState title="No capital deployed" detail={COPY.lenders.emptyAllocations} />
       ) : (
         <ul className="divide-y divide-line/60">
           {provider.allocations.map((allocation) => {

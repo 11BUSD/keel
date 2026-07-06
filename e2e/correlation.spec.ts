@@ -21,8 +21,10 @@ test("correlation view shows the crowded cluster and its margin add-on", async (
   await page.getByRole("link", { name: "Financing" }).click();
   await page.locator("#fin-agent").selectOption("agt-swarmlabel");
   await page.getByRole("button", { name: "Submit to risk engine" }).click();
-  await expect(page.getByText("R9_CORRELATION_CROWDING")).toBeVisible({
+  await expect(page.getByText("Approved", { exact: true })).toBeVisible({
     timeout: 15_000,
   });
+  await page.getByText(/Show the details/).click();
+  await expect(page.getByText("R9_CORRELATION_CROWDING")).toBeVisible();
   await expect(page.getByText(/crowding adds 4% to the fee/)).toBeVisible();
 });

@@ -7,6 +7,8 @@ import { Panel } from "@/components/ui/Panel";
 import { Sparkline } from "@/components/ui/Sparkline";
 import { StatBlock } from "@/components/ui/StatBlock";
 import { EmptyState, ErrorState, Skeleton, SkeletonRows } from "@/components/ui/States";
+import { ScreenIntro } from "@/components/ui/ScreenIntro";
+import { COPY } from "@/content/copy";
 
 export const metadata: Metadata = { title: "Design System — Keel" };
 
@@ -24,13 +26,7 @@ const tokens = [
 export default function StylePage() {
   return (
     <div className="space-y-4">
-      <div>
-        <h1 className="text-xl font-semibold tracking-tight">Design system</h1>
-        <p className="mt-1 text-[13px] text-ink-muted">
-          Semantic tokens and every primitive with its loading, empty, and error states
-          (docs/DESIGN.md).
-        </p>
-      </div>
+      <ScreenIntro title={COPY.screens.style.title} intro={COPY.screens.style.intro} />
 
       <Panel title="Color tokens">
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">

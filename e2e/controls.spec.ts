@@ -18,7 +18,7 @@ test("a killed agent cannot be financed, and the kill is audited", async ({ page
   await expect(page.getByText("Denied", { exact: true })).toBeVisible({
     timeout: 15_000,
   });
-  await expect(page.getByText(/status is "killed"/)).toBeVisible();
+  await expect(page.getByText(/switched off right now/)).toBeVisible();
 
   // The audit log carries the kill event and the chain still verifies.
   await page.getByRole("link", { name: "Audit Log" }).click();
@@ -39,5 +39,5 @@ test("global freeze halts financing fleet-wide", async ({ page }) => {
   await expect(page.getByText("Denied", { exact: true })).toBeVisible({
     timeout: 15_000,
   });
-  await expect(page.getByText(/Global freeze is active/)).toBeVisible();
+  await expect(page.getByText(/frozen fleet-wide/)).toBeVisible();
 });

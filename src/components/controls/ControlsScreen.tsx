@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Panel } from "@/components/ui/Panel";
 import { ErrorState, SkeletonRows } from "@/components/ui/States";
+import { COPY } from "@/content/copy";
 import { formatDays, formatUsdCompact } from "@/lib/format";
 import {
   useAgents,
@@ -30,19 +31,15 @@ export function ControlsScreen() {
   const frozen = summary.data.globalFreeze;
   return (
     <div className="space-y-4">
-      <Panel title="Global freeze">
+      <Panel title={COPY.controls.freezeTitle}>
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="max-w-xl">
-            <p className="text-[13px] text-ink-muted">
-              The fleet-wide hard stop. While engaged, every financing and spend path is
-              halted for every agent — the risk engine denies all requests on rule
-              R1_AGENT_OPERABLE. Engagement and release are written to the audit chain.
-            </p>
+            <p className="text-[13px] text-ink-muted">{COPY.controls.freezeBody}</p>
             <div className="mt-2">
               {frozen ? (
-                <Badge tone="danger">FREEZE ACTIVE — fleet halted</Badge>
+                <Badge tone="danger">{COPY.controls.freezeOn}</Badge>
               ) : (
-                <Badge tone="positive">Fleet operating normally</Badge>
+                <Badge tone="positive">{COPY.controls.freezeOff}</Badge>
               )}
             </div>
           </div>
@@ -51,16 +48,13 @@ export function ControlsScreen() {
             busy={freeze.isPending}
             onClick={() => freeze.mutate(!frozen)}
           >
-            {frozen ? "Release global freeze" : "Engage global freeze"}
+            {frozen ? COPY.controls.releaseFreeze : COPY.controls.engageFreeze}
           </Button>
         </div>
       </Panel>
 
-      <Panel title="Per-agent kill switches">
-        <p className="mb-3 text-[13px] text-ink-muted">
-          Killing an agent immediately halts its spending, trading, and financing.
-          A killed agent cannot draw advances and cannot be overridden until reactivated.
-        </p>
+      <Panel title={COPY.controls.killTitle}>
+        <p className="mb-3 text-[13px] text-ink-muted">{COPY.controls.killBody}</p>
         <ul className="divide-y divide-line/60">
           {agents.data.map((a) => (
             <KillRow key={a.id} agent={a} busy={kill.isPending} onToggle={kill.mutate} />
@@ -99,7 +93,7 @@ function KillRow({
         disabled={agent.status === "paused"}
         onClick={() => onToggle({ agentId: agent.id, killed: !killed })}
       >
-        {killed ? "Reactivate" : "Kill"}
+        {killed ? COPY.controls.reactivate : COPY.controls.kill}
       </Button>
     </li>
   );

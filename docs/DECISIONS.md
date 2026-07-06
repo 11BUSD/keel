@@ -123,6 +123,24 @@ protection on `main` (API reports protected:false, so red checks cannot yet BLOC
 merge — the deliberate-broken-PR demonstration is deferred until protection is on)
 and the Vercel↔GitHub connection for per-PR previews.
 
+## ADR-0014 — Round 14: plain-language copy system with progressive disclosure
+**Date:** 2026-07-06 · **Status:** Accepted
+All narrative user-facing copy now lives in `src/content/copy.ts` (+ the jargon
+translation table in `src/content/terms.ts`); components import from there. Three
+reusable primitives implement the disclosure pattern: `<Term>` (plain phrase leads,
+expert term + definition on tap), `<ShowDetails>` (native `<details>` around every
+expert artifact — rule traces collapsed by default, keyed by decision id so each new
+decision starts collapsed), `<ScreenIntro>` (one plain sentence per route). Hero
+moments (landing, denial, moat, waterfall, runway alert) use the Milestone-3 pack
+rewrites near-verbatim. Engine-generated strings (rule details, summaries, audit
+text) are treated as the EXPERT layer and left unchanged — plain leads are composed
+in the UI from decision data (e.g. denial reasons from failed rule ids + agent
+facts), so no engine logic or numbers moved in a copy round.
+**Boundary:** structural micro-labels inside data primitives (table headers, stat
+captions) remain colocated; sentences, titles, buttons, and states are centralized.
+**Rejected:** i18n framework (one locale, a demo), rewriting engine strings to plain
+language (would blur the expert layer the disclosure pattern exists to preserve).
+
 ## ADR-0007 — Playwright e2e and CI pipeline deferred to next milestone
 **Date:** 2026-07-05 · **Status:** Accepted (deviation from playbook, logged per §E3)
 Round 1 ships with Vitest unit + component smoke tests, local verify commands, and a
