@@ -35,6 +35,27 @@ export const COPY = {
       "Prototype demonstrator. No real funds, custody, private keys, or trading — the entire money layer is simulated behind typed interfaces.",
   },
 
+  explainer: {
+    heading: "New here? The whole idea in 30 seconds",
+    steps: [
+      {
+        title: "AI agents are becoming businesses.",
+        body: "Software agents now do paid work — research, translations, logistics deals. They have income and bills, just like a small company.",
+      },
+      {
+        title: "Every business eventually needs a bank.",
+        body: "When a good one runs low on cash, someone has to decide: lend it money, or let it die? And someone needs the power to switch a bad one off.",
+      },
+      {
+        title: "Keel is that someone.",
+        body: "Behind every trader on Wall Street sits a bank, a risk desk, and a safety net. Keel is that trio for AI agents — watching them, lending to them, and holding the off switch.",
+      },
+    ],
+    honesty:
+      "Everything on this site is a simulation — fictional businesses, fictional money — built so you can see exactly how it would work.",
+    cta: "See it for yourself — take the tour",
+  },
+
   shell: {
     brand: "Keel",
     brandSuffix: "Prime",

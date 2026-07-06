@@ -48,7 +48,36 @@ export default function LandingPage() {
           </Link>
         </div>
 
-        <div className="mt-16 grid gap-4 sm:grid-cols-3">
+        <section
+          aria-labelledby="explainer-heading"
+          className="mt-16 rounded-lg border border-accent/25 bg-surface-1 p-6"
+        >
+          <h2 id="explainer-heading" className="text-base font-semibold">
+            {COPY.explainer.heading}
+          </h2>
+          <ol className="mt-4 grid gap-4 sm:grid-cols-3">
+            {COPY.explainer.steps.map((step, i) => (
+              <li key={step.title}>
+                <div className="flex items-baseline gap-2">
+                  <span className="font-mono text-xs text-accent">{i + 1}</span>
+                  <h3 className="text-sm font-semibold">{step.title}</h3>
+                </div>
+                <p className="mt-1.5 text-[13px] leading-relaxed text-ink-muted">
+                  {step.body}
+                </p>
+              </li>
+            ))}
+          </ol>
+          <p className="mt-4 text-xs text-caution">{COPY.explainer.honesty}</p>
+          <Link
+            href="/dashboard?tour=1"
+            className="mt-4 inline-block rounded-md border border-accent/40 px-4 py-2 text-sm font-medium text-accent transition-colors hover:bg-accent/10"
+          >
+            {COPY.explainer.cta}
+          </Link>
+        </section>
+
+        <div className="mt-8 grid gap-4 sm:grid-cols-3">
           {landing.pillars.map((p) => (
             <div key={p.title} className="rounded-lg border border-line bg-surface-1 p-5">
               <h2 className="text-sm font-semibold">{p.title}</h2>
