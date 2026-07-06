@@ -9,6 +9,7 @@ const items = [
   { href: "/treasury", label: "Treasury" },
   { href: "/risk", label: "Correlation Risk" },
   { href: "/scenarios", label: "Stress Scenarios" },
+  { href: "/lenders", label: "Capital Provider" },
   { href: "/controls", label: "Fail-safe Controls" },
   { href: "/audit", label: "Audit Log" },
   { href: "/style", label: "Design System" },

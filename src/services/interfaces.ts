@@ -3,6 +3,7 @@ import type {
   AdvanceTerms,
   AgentRecord,
   AuditEvent,
+  CapitalProvider,
   CorrelationCluster,
   FinancingRequestInput,
   FleetSummary,
@@ -30,6 +31,8 @@ export interface Ledger {
   getFleetSummary(): Promise<FleetSummary>;
   /** Advance book, newest first; optionally filtered to one agent (Round 9). */
   listAdvances(agentId?: string): Promise<Advance[]>;
+  /** The simulated capital provider's book (Round 12). */
+  getCapitalProvider(): Promise<CapitalProvider>;
 }
 
 export interface RiskEngine {
@@ -62,6 +65,10 @@ export interface TreasuryEngine {
    * floor sweeps into a simulated T-bill position (Round 9, ADR-0009).
    */
   advanceTime(days: number): Promise<SimulationReport>;
+  /** Provider commits more simulated capital to the platform (Round 12). */
+  deployCapital(amountUsd: number): Promise<CapitalProvider>;
+  /** Provider withdraws liquid capital; bounded by what is not deployed. */
+  withdrawCapital(amountUsd: number): Promise<CapitalProvider>;
 }
 
 export interface MandateEngine {

@@ -73,11 +73,20 @@ export class MockScenarioEngine implements ScenarioEngine {
         });
       }
       if (uncoveredUsd > 0) {
+        const provider = world.capitalProvider;
+        provider.lossUsd += uncoveredUsd;
+        provider.availableUsd = Math.max(0, provider.availableUsd - uncoveredUsd);
         timeline.push({
           step: timeline.length,
           actor: "waterfall",
           action: "waterfall.exhausted",
-          detail: `${formatUsd(uncoveredUsd)} exceeds all six layers — capital providers absorb the remainder.`,
+          detail: `${formatUsd(uncoveredUsd)} exceeds all six layers — ${provider.name} absorbs the remainder.`,
+        });
+        appendAudit({
+          actor: "waterfall",
+          category: "control",
+          action: "provider.loss",
+          detail: `${formatUsd(uncoveredUsd)} pierced the full waterfall and was attributed to ${provider.name}.`,
         });
       }
       appendAudit({

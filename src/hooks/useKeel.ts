@@ -51,6 +51,31 @@ export function useCorrelationReport() {
   });
 }
 
+export function useCapitalProvider() {
+  return useQuery({
+    queryKey: ["capital-provider"],
+    queryFn: () => getServices().ledger.getCapitalProvider(),
+  });
+}
+
+export function useDeployCapital() {
+  const invalidate = useInvalidateWorld();
+  return useMutation({
+    mutationFn: (amountUsd: number) =>
+      getServices().treasuryEngine.deployCapital(amountUsd),
+    onSuccess: invalidate,
+  });
+}
+
+export function useWithdrawCapital() {
+  const invalidate = useInvalidateWorld();
+  return useMutation({
+    mutationFn: (amountUsd: number) =>
+      getServices().treasuryEngine.withdrawCapital(amountUsd),
+    onSuccess: invalidate,
+  });
+}
+
 export function useScenarioSpecs() {
   return useQuery({
     queryKey: ["scenario-specs"],

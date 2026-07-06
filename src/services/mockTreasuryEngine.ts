@@ -1,9 +1,11 @@
 import {
   advanceTermsSchema,
+  PROVIDER_FEE_SHARE,
   simulationReportSchema,
   type AdvanceTerms,
   type Advance,
   type AgentRecord,
+  type CapitalProvider,
   type SimulationReport,
 } from "@/domain";
 import { formatUsd } from "@/lib/format";
@@ -40,6 +42,7 @@ export class MockTreasuryEngine implements TreasuryEngine {
       status: "active",
     };
     world.advances.push(advance);
+    fundFromProvider(world.capitalProvider, advance, terms);
     appendAudit({
       actor: "treasury-engine",
       category: "financing",
@@ -57,6 +60,9 @@ export class MockTreasuryEngine implements TreasuryEngine {
     await delay(this.latencyMs);
     const world = getWorld();
     const fromDay = world.simDay;
+    const outstandingBefore = new Map(
+      world.advances.map((a) => [a.id, a.outstandingUsd]),
+    );
     const report: SimulationReport = {
       days,
       fromDay,
@@ -82,6 +88,7 @@ export class MockTreasuryEngine implements TreasuryEngine {
         report.yieldAccruedUsd += t.yieldUsd;
       }
     }
+    reconcileProviderRepayments(world.capitalProvider, world.advances, outstandingBefore);
     appendAudit({
       actor: "treasury-engine",
       category: "system",
@@ -90,4 +97,82 @@ export class MockTreasuryEngine implements TreasuryEngine {
     });
     return simulationReportSchema.parse(report);
   }
+
+  async deployCapital(amountUsd: number): Promise<CapitalProvider> {
+    if (!Number.isFinite(amountUsd) || amountUsd <= 0 || amountUsd > 50_000_000) {
+      throw new Error("Deploy amount must be a positive USD figure (≤ $50M).");
+    }
+    await delay(this.latencyMs);
+    const provider = getWorld().capitalProvider;
+    provider.committedUsd += amountUsd;
+    provider.availableUsd += amountUsd;
+    appendAudit({
+      actor: provider.name,
+      category: "financing",
+      action: "capital.deployed",
+      detail: `${formatUsd(amountUsd)} simulated capital committed to the platform.`,
+    });
+    return structuredClone(provider);
+  }
+
+  async withdrawCapital(amountUsd: number): Promise<CapitalProvider> {
+    await delay(this.latencyMs);
+    const provider = getWorld().capitalProvider;
+    if (!Number.isFinite(amountUsd) || amountUsd <= 0) {
+      throw new Error("Withdrawal must be a positive USD figure.");
+    }
+    if (amountUsd > provider.availableUsd) {
+      throw new Error(
+        `Only ${formatUsd(provider.availableUsd)} is liquid — capital at work in advances cannot be withdrawn.`,
+      );
+    }
+    provider.committedUsd -= amountUsd;
+    provider.availableUsd -= amountUsd;
+    appendAudit({
+      actor: provider.name,
+      category: "financing",
+      action: "capital.withdrawn",
+      detail: `${formatUsd(amountUsd)} withdrawn from the platform.`,
+    });
+    return structuredClone(provider);
+  }
+}
+
+/** Provider funds what it can; spread = its share of the upfront fee, pro-rated. */
+function fundFromProvider(
+  provider: CapitalProvider,
+  advance: Advance,
+  terms: AdvanceTerms,
+): void {
+  const funded = Math.min(terms.principalUsd, provider.availableUsd);
+  if (funded <= 0) return;
+  const feeUsd = terms.principalUsd * terms.fee;
+  const spread = feeUsd * PROVIDER_FEE_SHARE * (funded / terms.principalUsd);
+  provider.availableUsd = provider.availableUsd - funded + spread;
+  provider.deployedUsd += funded;
+  provider.earnedSpreadUsd += spread;
+  provider.allocations.push({
+    advanceId: advance.id,
+    agentId: advance.agentId,
+    fundedUsd: funded,
+  });
+}
+
+/** Repayments release provider capital: allocations track outstanding downward. */
+function reconcileProviderRepayments(
+  provider: CapitalProvider,
+  advances: Advance[],
+  outstandingBefore: Map<string, number>,
+): void {
+  for (const allocation of provider.allocations) {
+    const advance = advances.find((a) => a.id === allocation.advanceId);
+    const before = outstandingBefore.get(allocation.advanceId);
+    if (!advance || before === undefined) continue;
+    const repaid = Math.max(0, before - advance.outstandingUsd);
+    const released = Math.min(repaid, allocation.fundedUsd);
+    allocation.fundedUsd -= released;
+    provider.deployedUsd -= released;
+    provider.availableUsd += released;
+  }
+  provider.allocations = provider.allocations.filter((a) => a.fundedUsd > 0.005);
 }

@@ -20,6 +20,20 @@ npm run lint       # eslint
 npm run build      # production build
 ```
 
+## Getting it live on your accounts (operator steps)
+
+The repo, CI workflow, and e2e suite are complete locally. Three steps need your
+GitHub/Vercel accounts:
+
+1. **Push to GitHub:** create an empty repo (e.g. `keel`), then
+   `git remote add origin https://github.com/<you>/keel.git && git push -u origin main`.
+   CI (`.github/workflows/ci.yml`) runs automatically on the first push.
+2. **Branch protection:** GitHub → Settings → Branches → protect `main`, require the
+   "Typecheck · Lint · Test · Build" and "Playwright e2e" checks to merge.
+3. **Connect Vercel to git:** Vercel dashboard → project `keel` → Settings → Git →
+   connect the GitHub repo. Every PR then gets a preview URL; `main` auto-deploys
+   to production.
+
 ## The 3-minute investor demo
 
 1. **Landing → Fleet dashboard.** 8 simulated agents; note **SwarmLabel**: strong
@@ -35,8 +49,22 @@ npm run build      # production build
 5. **Fail-safe controls.** Kill an agent (it can no longer be financed), show the
    global freeze, and end on the **audit log**: every event hash-chained and verified.
 
+### The extended walkthrough (Milestone 2)
+
+6. **Treasury.** Advance the simulation 30 days: the approved advance repays via the
+   revenue-share sweep, and surplus cash sweeps into simulated T-bills — with each
+   agent's compute reserve floor defended first (T-bills redeem automatically).
+7. **Correlation risk.** The helios-4 cluster: three agents, one bet, +4% crowding
+   margin — visible in every financing rule trace as `R9_CORRELATION_CROWDING`.
+8. **Stress scenarios.** Run the cohort cascade (staggered, rate-limited unwind) and
+   the oracle failure (fail-safe HALT). Watch the six-layer default waterfall absorb
+   losses in order.
+9. **Capital provider.** The lender's book: capital at work, earned spread, and the
+   waterfall standing between agent defaults and provider losses.
+
 Reloading the page resets the simulated world to the identical seeded state — every
-demo run is reproducible.
+demo run is reproducible. Use the sidebar (not the browser reload) to keep state
+during a walkthrough.
 
 ## How this was built (and how to keep building it)
 

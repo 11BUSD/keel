@@ -101,6 +101,18 @@ The cohort cascade unwinds the crowded Round-10 cluster in rate-limited tranches
 **Rejected:** folding scenarios into RiskEngine (different lifecycle: operator
 theater vs. per-request decisions); random shock sizing (breaks demo determinism).
 
+## ADR-0012 — Round 12: single simulated capital provider behind the waterfall
+**Date:** 2026-07-06 · **Status:** Accepted
+One seeded provider (Meridian Capital Partners, $1.5M committed) funds every
+advance from liquid capital, earns 80% of the upfront fee as spread (pro-rated if
+it can only partially fund), and is repaid as revenue-share sweeps release capital.
+Losses reach the provider ONLY as the waterfall's "uncovered" remainder — asserted
+in tests by collapsing layer capacities. Reads via `Ledger.getCapitalProvider()`;
+deploy/withdraw via `TreasuryEngine` (withdrawals bounded by liquid capital).
+**Rejected:** multiple providers/order-book matching (marketplace mechanics add
+noise, not narrative, at demo stage); provider yield on idle capital (Round 9's
+T-bill sweep already tells that story on the agent side).
+
 ## ADR-0007 — Playwright e2e and CI pipeline deferred to next milestone
 **Date:** 2026-07-05 · **Status:** Accepted (deviation from playbook, logged per §E3)
 Round 1 ships with Vitest unit + component smoke tests, local verify commands, and a

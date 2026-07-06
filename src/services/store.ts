@@ -2,6 +2,7 @@ import type {
   Advance,
   AgentRecord,
   AuditEvent,
+  CapitalProvider,
   FinancingRequest,
   RiskDecision,
   ScenarioResult,
@@ -25,6 +26,7 @@ export interface WorldState {
   audit: AuditEvent[];
   waterfall: WaterfallLayer[];
   lastScenario: ScenarioResult | null;
+  capitalProvider: CapitalProvider;
   globalFreeze: boolean;
   /** Simulation clock in days (Round 9). */
   simDay: number;
@@ -42,6 +44,16 @@ function createWorld(): WorldState {
     audit: [],
     waterfall: seedWaterfall(),
     lastScenario: null,
+    capitalProvider: {
+      id: "cp-meridian",
+      name: "Meridian Capital Partners",
+      committedUsd: 1_500_000,
+      availableUsd: 1_500_000,
+      deployedUsd: 0,
+      earnedSpreadUsd: 0,
+      lossUsd: 0,
+      allocations: [],
+    },
     globalFreeze: false,
     simDay: 0,
     idCounter: 0,

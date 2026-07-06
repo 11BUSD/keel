@@ -14,15 +14,23 @@ One vertical slice per round. A task is DONE only per Contract §G.
 | T-5 | Financing flow with explainable decision + audit writes | ✅ done |
 | T-6 | Fail-safe controls: kill switches, human override, audit log viewer | ✅ done |
 
-## Milestone 2 — hardening & the lender side (next round; prompts in README)
+## Milestone 2 — enforceable loop + the full money story (per the Milestone-2 prompt pack)
 
 | # | Task | Status |
 |---|------|--------|
-| T-7 | GitHub repo + CI (lint/typecheck/test on push, Vercel preview per PR) | ⬜ todo |
-| T-8 | Playwright e2e: dashboard happy path, financing approve/deny/override | ⬜ todo |
-| T-9 | Portfolio risk view: exposure, concentration, correlation across the fleet | ⬜ todo |
-| T-10 | Capital-provider (lender) console: book of advances, yield, risk appetite | ⬜ todo |
-| T-11 | Repayment simulation: revenue-share sweeps reduce outstanding advances over simulated time | ⬜ todo |
-| T-12 | Scenario seeds: switchable "calm / stressed" fleet worlds for demos | ⬜ todo |
+| R-7 | git repo + CI gate (typecheck/lint/test/build + e2e job) | ✅ local repo + workflow done; GitHub push / branch protection / Vercel-git connect are operator steps (see README) |
+| R-8 | Playwright e2e for the hero flows, wired into CI | ✅ done (6 journeys) |
+| R-9 | Financing lifecycle: draw → repay + reserve-floored T-bill sweep | ✅ done |
+| R-10 | Correlation clusters feed margin (R9_CORRELATION_CROWDING) + /risk view | ✅ done |
+| R-11 | Stress scenarios + CCP default waterfall + fail-safe halt + /scenarios | ✅ done |
+| R-12 | Capital-provider console: fund, earn spread, waterfall-protected | ✅ done |
+
+## Milestone 3 — candidates (not committed)
+
+| # | Task |
+|---|------|
+| R-13 | Switchable calm/stressed world seeds for demo variety |
+| R-14 | Auth + multi-tenant fleets (moves the demo toward pilot) |
+| R-15 | Real-time revenue attestation mock (webhook-style event stream) |
 
 ## Acceptance criteria live with each task prompt; statuses updated per round.

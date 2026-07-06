@@ -2,6 +2,7 @@ import {
   runwayDays,
   type Advance,
   type AgentRecord,
+  type CapitalProvider,
   type FleetSummary,
   type RiskDecision,
 } from "@/domain";
@@ -50,6 +51,11 @@ export class MockLedger implements Ledger {
       (a) => !agentId || a.agentId === agentId,
     );
     return [...all].reverse().map((a) => structuredClone(a));
+  }
+
+  async getCapitalProvider(): Promise<CapitalProvider> {
+    await delay(this.latencyMs);
+    return structuredClone(getWorld().capitalProvider);
   }
 
   async getFleetSummary(): Promise<FleetSummary> {
