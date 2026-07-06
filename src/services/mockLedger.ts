@@ -1,5 +1,6 @@
 import {
   runwayDays,
+  type Advance,
   type AgentRecord,
   type FleetSummary,
   type RiskDecision,
@@ -43,6 +44,14 @@ export class MockLedger implements Ledger {
     return d ? structuredClone(d) : null;
   }
 
+  async listAdvances(agentId?: string): Promise<Advance[]> {
+    await delay(this.latencyMs);
+    const all = getWorld().advances.filter(
+      (a) => !agentId || a.agentId === agentId,
+    );
+    return [...all].reverse().map((a) => structuredClone(a));
+  }
+
   async getFleetSummary(): Promise<FleetSummary> {
     await delay(this.latencyMs);
     const { agents, globalFreeze } = getWorld();
@@ -58,6 +67,8 @@ export class MockLedger implements Ledger {
       fleetOutstandingAdvanceUsd: agents.reduce((s, a) => s + a.outstandingAdvanceUsd, 0),
       medianRunwayDays: median(agents.map((a) => runwayDays(a.treasury))),
       globalFreeze,
+      simDay: getWorld().simDay,
+      fleetTbillUsd: agents.reduce((s, a) => s + a.tbill.balanceUsd, 0),
     };
   }
 }

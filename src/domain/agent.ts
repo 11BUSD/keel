@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { tbillPositionSchema } from "./lifecycle";
 
 /**
  * Agent-side domain contracts. Every entity crossing a module boundary has a zod
@@ -80,6 +81,8 @@ export const agentRecordSchema = z.object({
   counterparties: z.array(counterpartySchema),
   mandate: mandateSchema,
   outstandingAdvanceUsd: z.number().nonnegative(),
+  /** Simulated tokenized T-bill sweep balance (Round 9). */
+  tbill: tbillPositionSchema,
 });
 export type AgentRecord = z.infer<typeof agentRecordSchema>;
 

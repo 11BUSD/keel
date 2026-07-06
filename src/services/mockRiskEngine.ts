@@ -71,7 +71,7 @@ export class MockRiskEngine implements RiskEngine {
     });
 
     if (approved && terms) {
-      await this.treasury.applyAdvance(agent.id, terms);
+      await this.treasury.applyAdvance(agent.id, terms, decision.id);
     }
     return decision;
   }

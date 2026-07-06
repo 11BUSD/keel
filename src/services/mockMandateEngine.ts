@@ -97,7 +97,7 @@ export class MockMandateEngine implements MandateEngine {
       detail: decision.summary,
       agentId: agent.id,
     });
-    await this.treasury.applyAdvance(agent.id, terms);
+    await this.treasury.applyAdvance(agent.id, terms, decision.id);
     return decision;
   }
 }

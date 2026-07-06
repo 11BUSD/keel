@@ -1,4 +1,5 @@
 import type {
+  Advance,
   AgentRecord,
   AuditEvent,
   FinancingRequest,
@@ -17,8 +18,11 @@ export interface WorldState {
   agents: AgentRecord[];
   requests: FinancingRequest[];
   decisions: RiskDecision[];
+  advances: Advance[];
   audit: AuditEvent[];
   globalFreeze: boolean;
+  /** Simulation clock in days (Round 9). */
+  simDay: number;
   idCounter: number;
 }
 
@@ -29,8 +33,10 @@ function createWorld(): WorldState {
     agents: generateFleet(),
     requests: [],
     decisions: [],
+    advances: [],
     audit: [],
     globalFreeze: false,
+    simDay: 0,
     idCounter: 0,
   };
   appendAuditTo(state, {

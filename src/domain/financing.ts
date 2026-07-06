@@ -81,5 +81,8 @@ export const fleetSummarySchema = z.object({
   fleetOutstandingAdvanceUsd: z.number().nonnegative(),
   medianRunwayDays: z.number().nonnegative(),
   globalFreeze: z.boolean(),
+  /** Simulation clock, in days since the seeded world began (Round 9). */
+  simDay: z.number().int().nonnegative(),
+  fleetTbillUsd: z.number().nonnegative(),
 });
 export type FleetSummary = z.infer<typeof fleetSummarySchema>;

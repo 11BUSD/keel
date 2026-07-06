@@ -114,6 +114,7 @@ function buildAgent(cfg: AgentConfig, rng: Rng): AgentRecord {
       dailySpendLimitUsd: Math.round(cfg.dailyBurnUsd * 1.5),
     },
     outstandingAdvanceUsd: 0,
+    tbill: { balanceUsd: 0, yieldAccruedUsd: 0 },
   };
   return agentRecordSchema.parse(record);
 }

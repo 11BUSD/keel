@@ -1,10 +1,12 @@
 import type {
+  Advance,
   AdvanceTerms,
   AgentRecord,
   AuditEvent,
   FinancingRequestInput,
   FleetSummary,
   RiskDecision,
+  SimulationReport,
 } from "@/domain";
 
 /**
@@ -21,6 +23,8 @@ export interface Ledger {
   listDecisions(agentId?: string): Promise<RiskDecision[]>;
   getDecision(id: string): Promise<RiskDecision | null>;
   getFleetSummary(): Promise<FleetSummary>;
+  /** Advance book, newest first; optionally filtered to one agent (Round 9). */
+  listAdvances(agentId?: string): Promise<Advance[]>;
 }
 
 export interface RiskEngine {
@@ -33,8 +37,21 @@ export interface RiskEngine {
 }
 
 export interface TreasuryEngine {
-  /** Credits the net disbursement to the agent's treasury and books the advance. */
-  applyAdvance(agentId: string, terms: AdvanceTerms): Promise<AgentRecord>;
+  /**
+   * Credits the net disbursement to the agent's treasury and books the advance
+   * into the lifecycle ledger under the approving decision.
+   */
+  applyAdvance(
+    agentId: string,
+    terms: AdvanceTerms,
+    decisionId: string,
+  ): Promise<AgentRecord>;
+  /**
+   * Advances the simulation clock: revenue accrues, burn is paid, revenue-share
+   * sweeps repay active advances, and surplus cash above each agent's reserve
+   * floor sweeps into a simulated T-bill position (Round 9, ADR-0009).
+   */
+  advanceTime(days: number): Promise<SimulationReport>;
 }
 
 export interface MandateEngine {
