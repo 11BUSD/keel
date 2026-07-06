@@ -13,6 +13,7 @@ export const COPY = {
       "AI agents are starting to run real businesses — earning, spending, and paying their own bills. Keel is the bank, risk desk, and safety net behind them.",
     subhead:
       "Watch a fleet of AI-run businesses get financed, supervised, and stress-tested — with every decision explained in plain English.",
+    ctaTour: "Take the 2-minute tour",
     ctaConsole: "Open the fleet console",
     ctaFinancing: "Try the financing flow",
     simulatedBadge: "Demo · simulated data only",
@@ -42,6 +43,7 @@ export const COPY = {
     chainVerified: (n: number) => `Audit chain verified · ${n} events`,
     chainBroken: "Audit chain BROKEN",
     sessionNote: "Session world · reload to reset",
+    tourButton: "Take the tour",
     sidebarFooter:
       "Demo prototype. All data simulated — no real funds, custody, or trading.",
     nav: {

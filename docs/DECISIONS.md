@@ -141,6 +141,17 @@ captions) remain colocated; sentences, titles, buttons, and states are centraliz
 **Rejected:** i18n framework (one locale, a demo), rewriting engine strings to plain
 language (would blur the expert layer the disclosure pattern exists to preserve).
 
+## ADR-0015 — Round 15: non-blocking guided tour over real views
+**Date:** 2026-07-06 · **Status:** Accepted
+A 9-beat tour (steps + captions in `src/content/tour.ts`, per the README script)
+implemented as a React context in the console layout plus a fixed, NON-modal card:
+the page stays fully interactive, so beats that invite action ("press Submit") work
+for real — the tour narrates live views and never fakes a state or number.
+Entry points: landing CTA (`/dashboard?tour=1`) and a Topbar button; skippable at
+every step. **Rejected:** driver.js-style spotlight libraries (new dependency +
+focus-trap complexity for a demo); scripted auto-clicking of flows (fragile, and it
+would blur "the demo does it" vs "the visitor does it").
+
 ## ADR-0007 — Playwright e2e and CI pipeline deferred to next milestone
 **Date:** 2026-07-05 · **Status:** Accepted (deviation from playbook, logged per §E3)
 Round 1 ships with Vitest unit + component smoke tests, local verify commands, and a
