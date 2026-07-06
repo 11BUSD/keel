@@ -1,5 +1,6 @@
 import { type AgentRecord, type RiskDecision } from "@/domain";
 import { formatUsd } from "@/lib/format";
+import { clusterFor } from "./correlation";
 import type { MandateEngine, TreasuryEngine } from "./interfaces";
 import { buildTerms, collateralCapacity } from "./riskRules";
 import { appendAudit, delay, findAgent, getWorld, nextId } from "./store";
@@ -67,7 +68,12 @@ export class MockMandateEngine implements MandateEngine {
     }
 
     const request = world.requests.find((r) => r.id === original.requestId);
-    const terms = buildTerms(agent, approvedAmountUsd, request?.termDays ?? 30);
+    const terms = buildTerms(
+      agent,
+      approvedAmountUsd,
+      request?.termDays ?? 30,
+      clusterFor(agent, world.agents).feeAddOn,
+    );
     const decision: RiskDecision = {
       id: nextId("dec"),
       requestId: original.requestId,

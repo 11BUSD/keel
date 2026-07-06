@@ -7,6 +7,7 @@ const items = [
   { href: "/dashboard", label: "Fleet Dashboard" },
   { href: "/financing", label: "Financing" },
   { href: "/treasury", label: "Treasury" },
+  { href: "/risk", label: "Correlation Risk" },
   { href: "/controls", label: "Fail-safe Controls" },
   { href: "/audit", label: "Audit Log" },
   { href: "/style", label: "Design System" },

@@ -76,6 +76,18 @@ test forced this redemption rule, see treasurySim.test.ts). Killed/paused agents
 neither earn nor spend. **Rejected:** stochastic daily revenue (breaks demo
 determinism); real yield instruments (Contract PRIME DIRECTIVE).
 
+## ADR-0010 — Round 10: correlation clusters as explicit, explainable pricing
+**Date:** 2026-07-06 · **Status:** Accepted
+Agents carry `baseModel` + `strategyClass`; sharing BOTH forms a correlation cluster
+treated as one exposure. Crowding fee add-on = 2% per peer, capped at 8%, surfaced as
+info rule `R9_CORRELATION_CROWDING` in every decision trace and applied to approved
+and override terms alike. The seeded crowded cluster is helios-4 /
+autonomous-b2b-services (SwarmLabel, Courier, TickerMind → +4% each). Exposed via
+`RiskEngine.getCorrelationReport()` and the /risk view.
+**Rejected:** similarity scores / embedding distance (black box, violates the
+explainability contract); counterparty-overlap-only clustering (already covered by
+R4 concentration).
+
 ## ADR-0007 — Playwright e2e and CI pipeline deferred to next milestone
 **Date:** 2026-07-05 · **Status:** Accepted (deviation from playbook, logged per §E3)
 Round 1 ships with Vitest unit + component smoke tests, local verify commands, and a

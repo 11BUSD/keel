@@ -1,10 +1,13 @@
 import {
+  correlationClusterSchema,
   financingRequestInputSchema,
+  type CorrelationCluster,
   type FinancingRequest,
   type FinancingRequestInput,
   type RiskDecision,
 } from "@/domain";
 import { formatUsd } from "@/lib/format";
+import { clusterFor, computeClusters } from "./correlation";
 import type { RiskEngine, TreasuryEngine } from "./interfaces";
 import { buildTerms, evaluateRules, remediationFor } from "./riskRules";
 import { appendAudit, delay, findAgent, getWorld, nextId } from "./store";
@@ -42,10 +45,13 @@ export class MockRiskEngine implements RiskEngine {
       agentId: agent.id,
     });
 
-    const ruleTrace = evaluateRules(agent, input, world.globalFreeze);
+    const cluster = clusterFor(agent, world.agents);
+    const ruleTrace = evaluateRules(agent, input, world.globalFreeze, world.agents);
     const failedHard = ruleTrace.filter((r) => r.severity === "hard" && !r.passed);
     const approved = failedHard.length === 0;
-    const terms = approved ? buildTerms(agent, input.amountUsd, input.termDays) : undefined;
+    const terms = approved
+      ? buildTerms(agent, input.amountUsd, input.termDays, cluster.feeAddOn)
+      : undefined;
 
     const decision: RiskDecision = {
       id: nextId("dec"),
@@ -74,5 +80,12 @@ export class MockRiskEngine implements RiskEngine {
       await this.treasury.applyAdvance(agent.id, terms, decision.id);
     }
     return decision;
+  }
+
+  async getCorrelationReport(): Promise<CorrelationCluster[]> {
+    await delay(Math.min(this.latencyMs, 350));
+    return computeClusters(getWorld().agents)
+      .sort((a, b) => b.size - a.size)
+      .map((c) => correlationClusterSchema.parse(c));
   }
 }

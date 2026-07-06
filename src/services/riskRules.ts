@@ -7,6 +7,7 @@ import {
   type RuleOutcome,
 } from "@/domain";
 import { formatPct, formatUsd } from "@/lib/format";
+import { clusterFor, crowdingDetail } from "./correlation";
 
 /**
  * The deterministic rule set behind MockRiskEngine (ADR-0005). Pure functions:
@@ -24,10 +25,12 @@ export function haircutForVolatility(cv: number): number {
   return 0.35;
 }
 
-/** Upfront fee: base 2% + volatility premium + concentration premium. */
-export function feeFor(agent: AgentRecord): number {
+/** Upfront fee: base 2% + volatility premium + concentration premium + crowding add-on. */
+export function feeFor(agent: AgentRecord, crowdingFeeAddOn = 0): number {
   const concentrationBump = topCounterpartyShare(agent) > 0.5 ? 0.01 : 0;
-  return Number((0.02 + 0.03 * Math.min(agent.revenueVolatility, 1) + concentrationBump).toFixed(4));
+  return Number(
+    (0.02 + 0.03 * Math.min(agent.revenueVolatility, 1) + concentrationBump + crowdingFeeAddOn).toFixed(4),
+  );
 }
 
 /** Max financeable amount after haircut, mandate ratio, and outstanding advances. */
@@ -37,9 +40,14 @@ export function collateralCapacity(agent: AgentRecord): number {
   return Math.max(0, Math.round(gross - agent.outstandingAdvanceUsd));
 }
 
-export function buildTerms(agent: AgentRecord, amountUsd: number, termDays: number): AdvanceTerms {
+export function buildTerms(
+  agent: AgentRecord,
+  amountUsd: number,
+  termDays: number,
+  crowdingFeeAddOn = 0,
+): AdvanceTerms {
   const haircut = haircutForVolatility(agent.revenueVolatility);
-  const fee = feeFor(agent);
+  const fee = feeFor(agent, crowdingFeeAddOn);
   return {
     principalUsd: amountUsd,
     haircut,
@@ -54,14 +62,18 @@ export function evaluateRules(
   agent: AgentRecord,
   request: FinancingRequestInput,
   globalFreeze: boolean,
+  fleet: AgentRecord[],
 ): RuleOutcome[] {
   const haircut = haircutForVolatility(agent.revenueVolatility);
   const capacity = collateralCapacity(agent);
   const topShare = topCounterpartyShare(agent);
   const headroom = agent.mandate.maxAdvanceUsd - agent.outstandingAdvanceUsd;
+  const cluster = clusterFor(agent, fleet);
   const postRunway = runwayDays({
     ...agent.treasury,
-    cashUsd: agent.treasury.cashUsd + buildTerms(agent, request.amountUsd, request.termDays).netDisbursedUsd,
+    cashUsd:
+      agent.treasury.cashUsd +
+      buildTerms(agent, request.amountUsd, request.termDays, cluster.feeAddOn).netDisbursedUsd,
   });
 
   return [
@@ -101,6 +113,13 @@ export function evaluateRules(
       severity: "info",
       passed: true,
       detail: `Revenue volatility (CV) ${formatPct(agent.revenueVolatility)} → ${formatPct(haircut, 0)} collateral haircut applied to financeable revenue.`,
+    },
+    {
+      id: "R9_CORRELATION_CROWDING",
+      name: "Model-correlation crowding",
+      severity: "info",
+      passed: true,
+      detail: crowdingDetail(agent, cluster),
     },
     {
       id: "R6_MANDATE_CAP",

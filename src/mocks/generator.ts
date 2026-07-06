@@ -96,6 +96,8 @@ function buildAgent(cfg: AgentConfig, rng: Rng): AgentRecord {
     archetype: cfg.archetype,
     description: cfg.description,
     status: cfg.status,
+    baseModel: cfg.baseModel,
+    strategyClass: cfg.strategyClass,
     revenueSeries,
     trailing30dRevenueUsd: trailing30d,
     revenueVolatility: Number(coefficientOfVariation(revenueSeries).toFixed(4)),

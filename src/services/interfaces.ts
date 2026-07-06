@@ -3,6 +3,7 @@ import type {
   AdvanceTerms,
   AgentRecord,
   AuditEvent,
+  CorrelationCluster,
   FinancingRequestInput,
   FleetSummary,
   RiskDecision,
@@ -34,6 +35,11 @@ export interface RiskEngine {
    * approved — atomically from the caller's point of view.
    */
   evaluate(input: FinancingRequestInput): Promise<RiskDecision>;
+  /**
+   * Correlation clusters across the fleet (Round 10): agents sharing base model +
+   * strategy are one exposure; crowding feeds the fee via an explicit trace rule.
+   */
+  getCorrelationReport(): Promise<CorrelationCluster[]>;
 }
 
 export interface TreasuryEngine {

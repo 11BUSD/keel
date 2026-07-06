@@ -44,6 +44,13 @@ export function useAdvances(agentId?: string) {
   });
 }
 
+export function useCorrelationReport() {
+  return useQuery({
+    queryKey: ["correlation"],
+    queryFn: () => getServices().riskEngine.getCorrelationReport(),
+  });
+}
+
 export function useAuditLog() {
   return useQuery({
     queryKey: ["audit"],

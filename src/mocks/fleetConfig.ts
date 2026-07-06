@@ -1,9 +1,9 @@
-import type { AgentStatus, FinancingPurpose } from "@/domain";
+﻿import type { AgentStatus, FinancingPurpose } from "@/domain";
 
 /**
  * Hand-authored fleet archetypes. All names and figures are fictional. The seeded
  * generator turns these into full AgentRecords; each profile is tuned to make one
- * demo beat visible (low runway, concentration denial, volatility haircut, …).
+ * demo beat visible (low runway, concentration denial, volatility haircut, etc).
  */
 
 export interface CounterpartyConfig {
@@ -19,6 +19,9 @@ export interface AgentConfig {
   archetype: string;
   description: string;
   status: AgentStatus;
+  /** Model lineage + strategy; shared pairs form a correlation cluster (Round 10). */
+  baseModel: string;
+  strategyClass: string;
   /** Most recent monthly revenue in USD; earlier months derived from growth+noise. */
   baseMonthlyRevenueUsd: number;
   /** Month-over-month growth used to back-cast the series. */
@@ -37,6 +40,8 @@ export const FLEET_SEED = 1337;
 export const fleetConfig: AgentConfig[] = [
   {
     id: "agt-atlas",
+    baseModel: "corvid-x",
+    strategyClass: "research-briefs",
     name: "Atlas Research",
     archetype: "Enterprise research analyst",
     description:
@@ -58,6 +63,8 @@ export const fleetConfig: AgentConfig[] = [
   },
   {
     id: "agt-courier",
+    baseModel: "helios-4",
+    strategyClass: "autonomous-b2b-services",
     name: "Courier",
     archetype: "Logistics negotiation agent",
     description:
@@ -78,6 +85,8 @@ export const fleetConfig: AgentConfig[] = [
   },
   {
     id: "agt-lexidraft",
+    baseModel: "corvid-x",
+    strategyClass: "document-drafting",
     name: "LexiDraft",
     archetype: "Legal drafting service",
     description:
@@ -98,6 +107,8 @@ export const fleetConfig: AgentConfig[] = [
   },
   {
     id: "agt-swarmlabel",
+    baseModel: "helios-4",
+    strategyClass: "autonomous-b2b-services",
     name: "SwarmLabel",
     archetype: "Data-labeling swarm",
     description:
@@ -119,6 +130,8 @@ export const fleetConfig: AgentConfig[] = [
   },
   {
     id: "agt-tickermind",
+    baseModel: "helios-4",
+    strategyClass: "autonomous-b2b-services",
     name: "TickerMind",
     archetype: "Market-research copilot",
     description:
@@ -138,6 +151,8 @@ export const fleetConfig: AgentConfig[] = [
   },
   {
     id: "agt-renderfox",
+    baseModel: "prisma-2",
+    strategyClass: "creative-marketplace",
     name: "RenderFox",
     archetype: "Generative media studio",
     description:
@@ -158,6 +173,8 @@ export const fleetConfig: AgentConfig[] = [
   },
   {
     id: "agt-polyglot",
+    baseModel: "helios-4",
+    strategyClass: "translation-api",
     name: "PolyGlot",
     archetype: "Translation API",
     description:
@@ -177,6 +194,8 @@ export const fleetConfig: AgentConfig[] = [
   },
   {
     id: "agt-nightjar",
+    baseModel: "corvid-x",
+    strategyClass: "web-insights",
     name: "Nightjar",
     archetype: "Web-insights crawler",
     description:

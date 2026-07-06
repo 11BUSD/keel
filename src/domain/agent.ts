@@ -72,6 +72,9 @@ export const agentRecordSchema = z.object({
   archetype: z.string().min(1),
   description: z.string().min(1),
   status: agentStatusSchema,
+  /** Base model lineage — agents on the same model + strategy are one bet (Round 10). */
+  baseModel: z.string().min(1),
+  strategyClass: z.string().min(1),
   revenueSeries: z.array(revenuePointSchema).min(1),
   trailing30dRevenueUsd: z.number().nonnegative(),
   /** Coefficient of variation of monthly revenue, 0..1+. */
