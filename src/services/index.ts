@@ -3,6 +3,7 @@ import { MockAuditLog } from "./mockAuditLog";
 import { MockLedger } from "./mockLedger";
 import { MockMandateEngine } from "./mockMandateEngine";
 import { MockRiskEngine } from "./mockRiskEngine";
+import { MockScenarioEngine } from "./mockScenarioEngine";
 import { MockTreasuryEngine } from "./mockTreasuryEngine";
 
 export type { KeelServices } from "./interfaces";
@@ -11,6 +12,7 @@ export type {
   Ledger,
   MandateEngine,
   RiskEngine,
+  ScenarioEngine,
   TreasuryEngine,
 } from "./interfaces";
 
@@ -29,6 +31,7 @@ export function getServices(): KeelServices {
       riskEngine: new MockRiskEngine(treasuryEngine, 1400),
       treasuryEngine,
       mandateEngine: new MockMandateEngine(treasuryEngine),
+      scenarioEngine: new MockScenarioEngine(),
       auditLog: new MockAuditLog(),
     };
   }

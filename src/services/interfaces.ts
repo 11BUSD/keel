@@ -7,6 +7,10 @@ import type {
   FinancingRequestInput,
   FleetSummary,
   RiskDecision,
+  ScenarioId,
+  ScenarioResult,
+  ScenarioSpec,
+  ScenarioState,
   SimulationReport,
 } from "@/domain";
 
@@ -78,6 +82,21 @@ export interface MandateEngine {
   ): Promise<RiskDecision>;
 }
 
+export interface ScenarioEngine {
+  /** The named catastrophes available to the operator (Round 11). */
+  list(): Promise<ScenarioSpec[]>;
+  /**
+   * Runs a scenario deterministically: computes the loss from world state,
+   * narrates the automated responses, and walks the loss down the default
+   * waterfall — or HALTS on ambiguity (fail-safe default). Audited.
+   */
+  run(id: ScenarioId): Promise<ScenarioResult>;
+  /** Waterfall layers + the last result, for the scenario console. */
+  getState(): Promise<ScenarioState>;
+  /** Restores waterfall capacity and lifts a scenario-driven halt. Audited. */
+  reset(): Promise<void>;
+}
+
 export interface AuditLog {
   /** All events, newest first. */
   list(): Promise<AuditEvent[]>;
@@ -90,5 +109,6 @@ export interface KeelServices {
   riskEngine: RiskEngine;
   treasuryEngine: TreasuryEngine;
   mandateEngine: MandateEngine;
+  scenarioEngine: ScenarioEngine;
   auditLog: AuditLog;
 }

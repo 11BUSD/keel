@@ -4,9 +4,12 @@ import type {
   AuditEvent,
   FinancingRequest,
   RiskDecision,
+  ScenarioResult,
+  WaterfallLayer,
 } from "@/domain";
 import { fnv1a64 } from "@/lib/hash";
 import { generateFleet } from "@/mocks/generator";
+import { seedWaterfall } from "./waterfall";
 
 /**
  * In-memory world state for the simulated demo (ADR-0004). Internal to the services
@@ -20,6 +23,8 @@ export interface WorldState {
   decisions: RiskDecision[];
   advances: Advance[];
   audit: AuditEvent[];
+  waterfall: WaterfallLayer[];
+  lastScenario: ScenarioResult | null;
   globalFreeze: boolean;
   /** Simulation clock in days (Round 9). */
   simDay: number;
@@ -35,6 +40,8 @@ function createWorld(): WorldState {
     decisions: [],
     advances: [],
     audit: [],
+    waterfall: seedWaterfall(),
+    lastScenario: null,
     globalFreeze: false,
     simDay: 0,
     idCounter: 0,

@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { FinancingRequestInput } from "@/domain";
+import type { FinancingRequestInput, ScenarioId } from "@/domain";
 import { getServices } from "@/services";
 
 /**
@@ -48,6 +48,36 @@ export function useCorrelationReport() {
   return useQuery({
     queryKey: ["correlation"],
     queryFn: () => getServices().riskEngine.getCorrelationReport(),
+  });
+}
+
+export function useScenarioSpecs() {
+  return useQuery({
+    queryKey: ["scenario-specs"],
+    queryFn: () => getServices().scenarioEngine.list(),
+  });
+}
+
+export function useScenarioState() {
+  return useQuery({
+    queryKey: ["scenario-state"],
+    queryFn: () => getServices().scenarioEngine.getState(),
+  });
+}
+
+export function useRunScenario() {
+  const invalidate = useInvalidateWorld();
+  return useMutation({
+    mutationFn: (id: ScenarioId) => getServices().scenarioEngine.run(id),
+    onSuccess: invalidate,
+  });
+}
+
+export function useResetScenario() {
+  const invalidate = useInvalidateWorld();
+  return useMutation({
+    mutationFn: () => getServices().scenarioEngine.reset(),
+    onSuccess: invalidate,
   });
 }
 

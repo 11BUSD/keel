@@ -88,6 +88,19 @@ autonomous-b2b-services (SwarmLabel, Courier, TickerMind → +4% each). Exposed 
 explainability contract); counterparty-overlap-only clustering (already covered by
 R4 concentration).
 
+## ADR-0011 — Round 11: ScenarioEngine as a sixth service interface
+**Date:** 2026-07-06 · **Status:** Accepted
+Stress scenarios (flash crash, stablecoin de-peg, oracle failure, cohort cascade)
+run through a new typed `ScenarioEngine` interface — an explicit extension of the
+original five-interface money layer, logged here per Contract §E3. Losses are
+deterministic functions of world state; a CCP-style six-layer default waterfall
+(pure accounting in waterfall.ts: each layer exhausts before the next, totals
+conserve, excess is "uncovered") absorbs them. Oracle divergence takes the
+fail-safe default — HALT and engage the global freeze, never act on ambiguity.
+The cohort cascade unwinds the crowded Round-10 cluster in rate-limited tranches.
+**Rejected:** folding scenarios into RiskEngine (different lifecycle: operator
+theater vs. per-request decisions); random shock sizing (breaks demo determinism).
+
 ## ADR-0007 — Playwright e2e and CI pipeline deferred to next milestone
 **Date:** 2026-07-05 · **Status:** Accepted (deviation from playbook, logged per §E3)
 Round 1 ships with Vitest unit + component smoke tests, local verify commands, and a
