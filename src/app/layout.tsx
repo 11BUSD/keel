@@ -16,7 +16,22 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Keel — Prime brokerage for the AI agent economy",
   description:
-    "Demo prototype: monitor a simulated fleet of revenue-generating AI agents, finance compute against verifiable revenue, and keep every decision explainable and auditable. Simulated data only.",
+    "AI agents are starting to run real businesses. Keel is the bank, risk desk, and safety net behind them — a fully simulated, explainable demo.",
+  metadataBase: new URL("https://keel-alpha.vercel.app"),
+  openGraph: {
+    title: "Keel — the bank, risk desk, and safety net behind AI agents",
+    description:
+      "Watch a fleet of AI-run businesses get financed, supervised, and stress-tested — every decision explained in plain English. Simulated data only.",
+    url: "/",
+    siteName: "Keel",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Keel — the bank, risk desk, and safety net behind AI agents",
+    description:
+      "A fully simulated, explainable demo of prime brokerage for the AI agent economy.",
+  },
 };
 
 export default function RootLayout({

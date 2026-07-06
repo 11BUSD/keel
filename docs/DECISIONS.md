@@ -152,6 +152,18 @@ every step. **Rejected:** driver.js-style spotlight libraries (new dependency +
 focus-trap complexity for a demo); scripted auto-clicking of flows (fragile, and it
 would blur "the demo does it" vs "the visitor does it").
 
+## ADR-0016 — Rounds 16–17: explainer on landing; shareability via built-in OG image
+**Date:** 2026-07-06 · **Status:** Accepted
+The cold-visitor explainer is a landing-page section (not a separate /about route —
+one fewer hop for the first-time reader), with the simulated-data honesty line in
+the section body. Shareability: Next's file-convention `opengraph-image.tsx`
+(ImageResponse from next/og) renders the social card at build time from the same
+COPY strings — no design tool, never stale. Mobile: the sidebar hides under `md`
+and a horizontally-scrollable nav strip (aria-label "Primary", distinct from the
+desktop "Main" landmark) takes over; an e2e asserts zero horizontal overflow at
+375px. **Rejected:** a static PNG card (drifts from copy), hamburger drawer menu
+(more code, worse discoverability for a 9-route demo).
+
 ## ADR-0007 — Playwright e2e and CI pipeline deferred to next milestone
 **Date:** 2026-07-05 · **Status:** Accepted (deviation from playbook, logged per §E3)
 Round 1 ships with Vitest unit + component smoke tests, local verify commands, and a

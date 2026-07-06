@@ -32,7 +32,7 @@ One vertical slice per round. A task is DONE only per Contract §G.
 | R-13 | CI green on a real runner | ✅ verified (run 28790483341); branch protection + Vercel-git connect remain operator steps |
 | R-14 | Plain-language copy system: copy.ts + Term/ShowDetails/ScreenIntro | ✅ done |
 | R-15 | Guided 9-beat tour | ✅ done |
-| R-16 | Cold-visitor explainer | ⬜ todo |
-| R-17 | Shareability: OG card, responsive, a11y pass | ⬜ todo |
+| R-16 | Cold-visitor explainer | ✅ done |
+| R-17 | Shareability: OG card, responsive, a11y pass | ✅ done |
 
 ## Acceptance criteria live with each task prompt; statuses updated per round.
